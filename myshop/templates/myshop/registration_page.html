@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <style> /*	внутри тега <style> находятся CSS-стили для оформления элементов страницы */
+
+        /* задаем расположение элементов формы в одну строку с выравниванием по центру и отступом снизу */
+        .form-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        /* добавляем отступ справа для меток полей ввода */
+        .form-row label {
+            margin-right: 10px;
+        }
+
+        /* Устанавливаем ширину поля логина */
+        .form-row input[name="username"] {
+            width: 200px;
+        }
+
+        /* добавляем отступ справа для полей ввода */
+        .form-row input {
+            margin-right: 10px;
+        }
+
+        /* Стили для кнопки */
+        .form-row button {
+            background-color: #00BCD4; /* цвет фона кнорки */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            transition: background-color 0.3s; /* Плавный переход при изменении фона */
+        }
+        /* Изменение фона при наведении */
+        .form-row button:hover {
+            background-color: #0097A7;
+        }
+
+        /* Стиль для сообщения об успешной регистрации */
+        .success-message {
+            font-size: 20px; /* Увеличиваем размер шрифта */
+            font-style: italic; /* Делаем текст курсивом */
+            color: green; /* Зеленый цвет текста */
+        }
+
+        /* Стиль для сообщения об ошибке */
+        .error-message {
+            font-size: 20px; /* Увеличиваем размер шрифта */
+            font-style: italic; /* Делаем текст курсивом */
+            color: red; /* Красный цвет текста */
+        }
+    </style>
+</head>
+<body>
+    <h1>Регистрация</h1>
+
+    <!-- Вывод ошибки, если она есть -->
+    {% if error %}
+        <p class="error-message">Ошибка: {{ error }}</p>
+    {% endif %}
+
+    <!-- Вывод сообщения об успешной регистрации -->
+    {% if success %}
+        <p class="success-message">{{ success }}</p>
+    {% endif %}
+
+    <!-- Форма для регистрации -->
+    <form method="POST">
+        {% csrf_token %}
+        <!-- Используем Django форму  -->
+        <div class="form-row">
+            {{ form.username.label_tag }}
+            {{ form.username }}
+            {{ form.password.label_tag }}
+            {{ form.password }}
+            {{ form.repeat_password.label_tag }}
+            {{ form.repeat_password }}
+            {{ form.age.label_tag }}
+            {{ form.age }}
+            <button type="submit">Зарегистрироваться</button>
+        </div>
+    </form>
+</body>
+</html>

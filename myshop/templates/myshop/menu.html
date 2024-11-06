@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block titlename %}Страница{% endblock %}</title>
+    <style> /*	внутри тега <style> находятся CSS-стили для оформления элементов страницы */
+
+        * Стили для навигационного меню */
+        nav ul {
+            /*list-style-type: none; /* Убираем маркеры списка */
+            padding: 0; /* Убираем отступы */
+            margin: 0; /* Убираем внешние отступы */
+        }
+
+        nav ul li {
+            margin-bottom: 15px; /* Расстояние между пунктами меню */
+        }
+
+        nav ul li a {
+            /*text-decoration: none; /* Убираем подчеркивание */
+            font-size: 18px; /* Увеличиваем размер шрифта */
+            color: #000; /* Цвет текста по умолчанию */
+            transition: color 0.3s ease; /* Плавный переход цвета */
+            display: block; /* Делаем ссылку блочным элементом для удобства клика */
+            padding: 10px; /* Добавляем отступы для удобства клика */
+        }
+
+        nav ul li a:hover {
+            color: #ff5733; /* Цвет текста при наведении */
+        }
+
+        /* Стили для основного контента */
+        .main-content {
+            font-size: 20px; /* Увеличиваем размер шрифта в основном контенте */
+            color: #333; /* Цвет текста в основном контенте */
+            line-height: 1.6; /* Высота строки для лучшего чтения */
+            padding: 20px; /* Отступы вокруг основного контента */
+            background-color: #f9f9f9; /* Фоновый цвет основного контента */
+        }
+
+        /* Стили для списка продуктов */
+        .product-list {
+            list-style-type: none; /* Убираем маркеры списка */
+            padding: 0; /* Убираем отступы */
+            margin: 20px 0; /* Внешние отступы сверху и снизу */
+        }
+
+        .product-list li {
+            margin-bottom: 15px; /* Отступ между продуктами */
+            padding: 10px; /* Отступ внутри продукта */
+            border: 1px solid #ddd; /* Рамка вокруг каждого продукта */
+            border-radius: 5px; /* Закругление углов */
+            background-color: #fff; /* Фоновый цвет продукта */
+            transition: box-shadow 0.3s; /* Плавный переход тени */
+        }
+
+        .product-list li:hover {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень при наведении */
+        }
+
+        /* Стили для кнопок */
+        .buy-button {
+            padding: 10px 15px; /* Отступы кнопки */
+            font-size: 16px; /* Размер шрифта кнопки */
+            color: #fff; /* Цвет текста кнопки */
+            background-color: #007bff; /* Цвет фона кнопки */
+            border: none; /* Убираем рамку кнопки */
+            border-radius: 5px; /* Закругление углов кнопки */
+            cursor: pointer; /* Указываем, что элемент кликабельный */
+            transition: background-color 0.3s; /* Плавный переход фона */
+        }
+
+        .buy-button:hover {
+            background-color: #0056b3; /* Цвет фона кнопки при наведении */
+        }
+
+    </style>
+</head>
+<body>
+
+    <div>
+        <h1>{% block pagename %}Заголовок страницы{% endblock %}</h1>
+    </div>
+
+    <nav>
+        <ul>
+            <li><a href="/platform">Главная</a></li>
+            <li><a href="/shop/">Аптека</a></li>
+            <li><a href="/cart/">Корзина</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
+        {% block main_content %}
+        <!-- Основной контент страницы будет здесь -->
+        {% endblock %}
+    </div>
+
+</body>
+</html>

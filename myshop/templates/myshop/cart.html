@@ -1,0 +1,14 @@
+{% extends "myshop/menu.html" %}
+
+{% block titlename %}Корзина{% endblock %}
+
+{% block pagename %}Корзина{% endblock %}
+
+{% block main_content %}
+    {{ block.super }}
+    <h3>Страница для просмотра покупок</h3>
+
+    <p>{{ cart_info }}</p>
+
+    <a href="/platform"><button>Вернуться на главную</button></a>
+{% endblock %}

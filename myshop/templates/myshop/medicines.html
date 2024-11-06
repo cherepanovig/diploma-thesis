@@ -1,0 +1,22 @@
+{% extends "myshop/menu.html" %}
+
+{% block titlename %}Магазин{% endblock %}
+
+{% block pagename %}Лекарства{% endblock %}
+
+{% block main_content %}
+    {{ block.super }}
+    <h3>Страница для выбора товаров</h3>
+
+    <ul class="product-list">
+        <!-- Перебираем коллекцию products -->
+        {% for medicine in products %}
+            <li>
+                {{ medicine.title }} | {{ medicine.category }} | {{ medicine.description }}. Стоимость: {{ medicine.cost }}
+                <button class="buy-button">Купить</button>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <a href="/platform"><button>Вернуться на главную</button></a>
+{% endblock %}
