@@ -5,9 +5,11 @@ def read_execution_times(filename='execution_times.txt'):
     results = {
         'django': [],
         'sqlalchemy': [],
-        'tortoise': []
+        'tortoise': [],
+        'django_advanced': [],
+        'sqlalchemy_advanced': [],
+        'tortoise_advanced': []
     }
-
     try:
         with open(filename, 'r') as f:
             for line in f:
@@ -32,14 +34,14 @@ def create_chart(output_path='visualisation.png'):
     if not results:
         return
 
-    # Создаем диаграмму
+    # список фреймворков
     frameworks = list(results.keys())
     execution_times = list(results.values())
 
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(12, 8))
     bars = plt.bar(frameworks, execution_times)
 
-    plt.title('Сравнение времени выполнения тестов', fontsize=14)
+    plt.title('Сравнение времени выполнения всех тестов', fontsize=14)
     plt.xlabel('Фреймворк', fontsize=12)
     plt.ylabel('Среднее время выполнения (секунды)', fontsize=12)
 
@@ -47,15 +49,18 @@ def create_chart(output_path='visualisation.png'):
     for bar in bars:
         height = bar.get_height()
         plt.text(bar.get_x() + bar.get_width() / 2., height,
-                 f'{height:.3f}s',
+                 f'{height:.3f} сек',
                  ha='center', va='bottom')
 
     plt.grid(True, axis='y', linestyle='--', alpha=0.7)
 
     # Разные цвета для столбцов
-    colors = ['#2ecc71', '#3498db', '#e74c3c']
+    colors = ['#2ecc71', '#3498db', '#e74c3c', '#f1c40f', '#9b59b6', '#e67e22']
     for bar, color in zip(bars, colors):
         bar.set_color(color)
+
+    plt.xticks(rotation=45)
+    plt.tight_layout()
 
     plt.savefig(output_path)
     plt.close()

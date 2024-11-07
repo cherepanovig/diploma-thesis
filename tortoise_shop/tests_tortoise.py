@@ -1,8 +1,10 @@
 import time
+import random
 from unittest import IsolatedAsyncioTestCase
 import time
 from unittest import IsolatedAsyncioTestCase
 from tortoise import Tortoise
+from tortoise.functions import Count
 #from config import TORTOISE_ORM
 from .models import Buyer, Medicine, Purchase
 
@@ -92,6 +94,60 @@ class TortoiseShopTests(IsolatedAsyncioTestCase):
         write_execution_time('tortoise', execution_time)
         print(f"Время выполнения Tortoise: {execution_time}")
         # return end_time - start_time
+
+    async def test_tortoise_advanced(self):
+        start_time = time.time()
+        categories = ['Гомеопатия', 'Болеутоляющие', 'Фитопрепараты', 'Жаропонижающее']
+
+        # CREATE
+        buyers = [
+            Buyer(
+                name=f'Иван Иванов {i + 1}',
+                balance=random.uniform(500.01, 2000.01),
+                age=random.randint(15, 90)
+            ) for i in range(1000)
+        ]
+        await Buyer.bulk_create(buyers)  # метод bulk_create массово создает и сохраняет  объекты в базе данных
+        buyers = await Buyer.all()  # Получаем все сохраненные объекты Buyer
+
+        medicines = [
+            Medicine(
+                title=f'Лекарство {i + 1}',
+                category=random.choice(categories),
+                cost=random.uniform(99.99, 5999.99),
+                description='Описание лекарства'
+            ) for i in range(1000)
+        ]
+        await Medicine.bulk_create(medicines)
+        medicines = await Medicine.all()  # Получаем все сохраненные объекты Medicine
+
+        purchases = [Purchase(buyer=buyers[i], medicine=medicines[i]) for i in range(1000)]
+        await Purchase.bulk_create(purchases)
+
+        # Проверки количества записей:
+        self.assertEqual(await Buyer.all().count(), 1000)
+        self.assertEqual(await Medicine.all().count(), 1000)
+        self.assertEqual(await Purchase.all().count(), 1000)
+
+        # СОРТИРОВКА: сортировка покупателей по возрасту
+        sorted_buyers = await Buyer.all().order_by('age')
+        print(f"Первый покупатель по возрасту: {sorted_buyers[0].age}")
+
+        # ФИЛЬТРАЦИЯ: найти всех покупателей с балансом больше 1500
+        filtered_buyers = await Buyer.filter(balance__gt=1500)
+        print(f"Количество покупателей с балансом больше 1500: {len(filtered_buyers)}")
+
+        # ГРУППИРОВКА: группировка лекарств по категории и подсчет количества в каждой группе
+        grouped_medicine = await Medicine.all().group_by('category').annotate(count=Count('id')).values('category',
+                                                                                                        'count')
+        for group in grouped_medicine:
+            print(f"Категория: {group['category']}, Количество: {group['count']}")
+
+        end_time = time.time()
+        execution_time = end_time - start_time
+        write_execution_time('tortoise_advanced', execution_time)
+        print(f"Время выполнения Tortoise (усложненные операции): {execution_time}")
+        return execution_time
 
 
 # Запуск тестов
